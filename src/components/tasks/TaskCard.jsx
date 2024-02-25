@@ -1,12 +1,16 @@
 import { ArrowRightIcon, TrashIcon } from '@heroicons/react/24/outline';
-import { useDispatch } from 'react-redux';
-import {
-  removeTask,
-  updateStatus,
-} from '../../redux/features/tasks/tasksSlice';
+// import { useDispatch } from 'react-redux';
+import { useUpdateTaskMutation } from '../../redux/features/api/baseApi';
+// import {
+//   removeTask,
+//   updateStatus,
+// } from '../../redux/features/tasks/tasksSlice';
 
 const TaskCard = ({ task }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+  const [updteTask, {data, isError}] = useUpdateTaskMutation()
+
+  console.log(data, isError)
 
   let updatedStatus;
 
@@ -33,12 +37,14 @@ const TaskCard = ({ task }) => {
       <div className="flex justify-between mt-3">
         <p>{task?.date}</p>
         <div className="flex gap-3">
-          <button onClick={() => dispatch(removeTask(task.id))} title="Delete">
+          <button
+            title="Delete">
             <TrashIcon className="h-5 w-5 text-red-500" />
           </button>
           <button
             onClick={() =>
-              dispatch(updateStatus({ id: task.id, status: updatedStatus }))
+              // dispatch(updateStatus({ id: task.id, status: updatedStatus }))
+              updteTask({id: task._id, data:{status: updatedStatus}})
             }
             title="Update Status"
           >
